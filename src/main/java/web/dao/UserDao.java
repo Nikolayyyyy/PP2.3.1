@@ -1,6 +1,7 @@
 package web.dao;
 
-import javax.xml.registry.infomodel.User;
+import web.model.User;
+
 import java.util.List;
 
 public interface UserDao {
