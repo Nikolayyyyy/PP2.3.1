@@ -3,22 +3,21 @@ package web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import web.model.User;
 import web.service.UserService;
 
 @Controller
 @RequestMapping("/users")
 public class UsersController {
+    UserService userService;
 
     private UserService userService;
 
     @Autowired(required = true)
     public void setUserService(UserService userService) {
         this.userService = userService;
+        userService.listUsers();
     }
 
     @RequestMapping(value = "users", method = RequestMethod.GET)
@@ -46,17 +45,17 @@ public class UsersController {
         return "redirect:/users";
     }
 
-    @RequestMapping("/edit/{id}")
-    public String editUser(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", this.userService.getById(id));
-        model.addAttribute("listUsers", this.userService.listUsers());
+    @RequestMapping("/{id}/update/")
+    public String updateUser(@PathVariable("id") int id, Model model) {
+        model.addAttribute("user", userService.getById(id));
+        model.addAttribute("listUsers", userService.listUsers());
 
-        return "users";
+        return "users/update";
     }
 
     @RequestMapping("/userData/{id}")
     public String userData(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", this.userService.getById(id));
+        model.addAttribute("user", userService.getById(id));
 
         return "userData";
     }
